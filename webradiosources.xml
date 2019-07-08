@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- no m3u playlists -->
+<webradio>
+    <source uri="http://188.94.97.91/radio21.mp3">Radio 21</source>
+    <source uri="http://mp3channels.webradio.rockantenne.de/rockantenne">Rock Antenne</source>
+    <source uri="http://server1.blitz-stream.de:4400">Metal Only</source>
+</webradio>
