@@ -1,8 +1,9 @@
 import logging
 import vlc
-import xml.etree.ElementTree
+import xml.etree.ElementTree as ET
 import os
 import sys
+import re
 
 class Player(object):
     def play_pause(self):
@@ -18,8 +19,11 @@ class Player(object):
 class WebRadio (Player):
     input = os.path.join( sys.path[0], "webradiosources.xml")
     def __init__(self):
+        with open(WebRadio.input) as file:  
+            data = file.read()
+            xmlstring = re.sub(' xmlns="[^"]+"', '', data, count=1)
+            self.tree = ET.fromstring(xmlstring)
 
-        self.tree = xml.etree.ElementTree.parse(WebRadio.input).getroot()
         self.media_list = []
         self.current = 0
 
