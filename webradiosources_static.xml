@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <webradio>
-    <source uri="http://188.94.97.91/radio21.mp3">Radio 21</source>
-    <source uri="http://mp3channels.webradio.rockantenne.de/rockantenne">Rock Antenne</source>
-    <source uri="http://server1.blitz-stream.de:4400">Metal Only</source>
-    <source uri="https://ndr-ndr2-niedersachsen.sslcast.addradio.de/ndr/ndr2/niedersachsen/mp3/128/stream.mp3">NDR2 NDS</source>
-    <source uri="http://mp3channels.webradio.rockantenne.de/heavy-metal">Rock Antenne Heavy Metal</source>
+    <source name="Radio 21">http://188.94.97.91/radio21.mp3</source>
+    <source name="Rockantenne">http://mp3channels.webradio.rockantenne.de/rockantenne</source>
 </webradio>

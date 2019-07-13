@@ -24,8 +24,8 @@ class WebRadio (Player):
         self.current = 0
 
         for source in self.tree.findall("source"):
-            name = str(source.text)
-            uri = str(source.get("uri"))
+            uri = str(source.text)
+            name = str(source.get("name"))
 
             self.media_list.append((name, uri))
 
