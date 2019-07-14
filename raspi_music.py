@@ -1,5 +1,4 @@
 import logging
-import signal
 import sys
 import webradio
 import spotify
@@ -40,19 +39,18 @@ class PiRadio(object):
                 self.spotify.stop()
                 self.state = "off"
 
-def sigint_handler(signum, frame):
-    radio.input("x")
-    exit(0)
-
-
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,format= '%(asctime)s [%(levelname)s] %(message)s', datefmt='%H:%M:%S')
     radio = PiRadio()
-    signal.signal(signal.SIGINT, sigint_handler)
-    signal.signal(signal.SIGTERM, sigint_handler)
 
     print ("Controls: \nSpace\tplay/pause\n<\tPrevious\n>\tNext\nx\tStop\nw\tWebradio\ns\tSpotify\nCtrl+C\tExit\n")
     
-    while (True):
-        char = sys.stdin.read(1)
-        radio.input(char)
+    radio.input("w")
+
+    try:
+        while (True):
+            char = sys.stdin.read(1)
+            radio.input(char)
+    except KeyboardInterrupt:
+        radio.input("x")
+        exit(0)

@@ -4,6 +4,8 @@ import xml.etree.ElementTree as ET
 import os
 import sys
 import re
+from threading import Timer
+from time import sleep
 
 class Player(object):
     def play_pause(self):
@@ -45,6 +47,21 @@ class WebRadio (Player):
 
     def print_current(self):
         logging.debug(str(self.current) + " - " + str(self.media_list[self.current]))
+
+        timer = Timer(0.5, self.print_title)
+        timer.start()
+
+    def print_title(self):
+        cnt = 0
+        while (not self.player.is_playing() and cnt < 10):
+            sleep(0.1)
+        sleep(0.1)
+
+        title = str(self.player.get_media().get_meta(vlc.Meta.Title))
+        playing = str(self.player.get_media().get_meta(vlc.Meta.NowPlaying))
+
+        logging.info ("Station: " + title)
+        logging.info ("Playing: " + playing)
 
     def play_pause(self):
         logging.debug("play_pause")
