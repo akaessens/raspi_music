@@ -38,6 +38,8 @@ class PiRadio():
                 self.webradio.prev()
             elif char == " ":
                 self.webradio.play_pause()
+            elif char == "l":
+                self.webradio.list_stations()
 
         # SPOTIFY
         elif self.state == "spotify":
@@ -50,14 +52,16 @@ class PiRadio():
 
 if __name__ == '__main__':
 
-    control_desc = ("Controls:\n"
+    control_desc = ("General Controls:\n"
+                    "  x           Stop\n"
+                    "  w           WebRadio\n"
+                    "  s           Spotify\n"
+                    "  Ctrl+C      Exit\n\n"
+                    "WebRadio Controls:\n"
                     "  Space       play/pause\n"
                     "  <           Previous\n"
                     "  >           Next\n"
-                    "  x           Stop\n"
-                    "  w           Webradio\n"
-                    "  s           Spotify\n"
-                    "  Ctrl+C      Exit\n")
+                    "  l           List Stations\n")
 
     parser = argparse.ArgumentParser(
         description="WebRadio and Spotify Connect Client",
@@ -65,11 +69,14 @@ if __name__ == '__main__':
         epilog=control_desc
     )
 
-    parser.add_argument('--v', action='store_true', help='Verbose logging')
-    parser.add_argument('--w', action='store_true', help='Start with WebRadio')
-    parser.add_argument('--s', action='store_true', help='Start with Spotify')
+    parser.add_argument('-v', type=int, default=0, choices=range(0, 3),
+                        help='Verbose logging level(default=0)')
+    parser.add_argument('-w', action='store_true', help='Start with WebRadio')
+    parser.add_argument('-s', action='store_true', help='Start with Spotify')
 
     args = parser.parse_args()
+
+    print(control_desc)
 
     level = logging.INFO
     if args.v:

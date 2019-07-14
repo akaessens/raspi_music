@@ -9,11 +9,8 @@ class Spotify():
         logging.info("Spotify Connect client started.")
 
         command = "spotifyd --no-daemon"
-        if args["v"]:
-            out = sys.stdout
-        else:
-            out = subprocess.PIPE
-        self.process = subprocess.Popen(command, stdout=out, shell=True)
+        
+        self.process = subprocess.Popen(command, shell=True)
 
     def stop(self):
         self.process.kill()
