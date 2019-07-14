@@ -7,21 +7,19 @@ import re
 from threading import Timer
 from time import sleep
 
-class Player(object):
-    def play_pause(self):
-        logging.debug("play_pause")
 
-    def prev(self):
-        logging.debug("prev")
-    
-    def next(self):
-        logging.debug("next")
+@vlc.CallbackDecorators.LogCb
+def log_callback(data, level, ctx, fmt, args):
+    if level > 0:
+        logging.debug(fmt.decode('UTF-8'), args)
+    pass
 
 
-class WebRadio (Player):
-    input = os.path.join( sys.path[0], "webradiosources.xml")
-    def __init__(self):
-        with open(WebRadio.input) as file:  
+class WebRadio():
+    input = os.path.join(sys.path[0], "webradiosources.xml")
+
+    def __init__(self, args):
+        with open(WebRadio.input) as file:
             data = file.read()
             xmlstring = re.sub(' xmlns="[^"]+"', '', data, count=1)
             self.tree = ET.fromstring(xmlstring)
@@ -36,17 +34,19 @@ class WebRadio (Player):
             self.media_list.append((name, uri))
 
         self.vlc_instance = vlc.Instance()
-        self.vlc_instance.log_unset()
+        self.vlc_instance.log_set(log_callback, None)
+
         self.player = self.vlc_instance.media_player_new()
 
         self.player.set_mrl(self.media_list[self.current][1])
         self.player.play()
 
-        logging.debug("webradio started")
+        logging.info("WebRadio started.")
         self.print_current()
 
     def print_current(self):
-        logging.debug(str(self.current) + " - " + str(self.media_list[self.current]))
+        logging.debug(str(self.current) + " - " +
+                      str(self.media_list[self.current]))
 
         timer = Timer(0.5, self.print_title)
         timer.start()
@@ -60,8 +60,8 @@ class WebRadio (Player):
         title = str(self.player.get_media().get_meta(vlc.Meta.Title))
         playing = str(self.player.get_media().get_meta(vlc.Meta.NowPlaying))
 
-        logging.info ("Station: " + title)
-        logging.info ("Playing: " + playing)
+        logging.info("Station: " + title)
+        logging.info("Playing: " + playing)
 
     def play_pause(self):
         logging.debug("play_pause")
@@ -69,7 +69,7 @@ class WebRadio (Player):
 
     def prev(self):
 
-        self.current = (self.current-1) % len(self.media_list)
+        self.current = (self.current - 1) % len(self.media_list)
         self.print_current()
 
         self.player.set_mrl(self.media_list[self.current][1])
@@ -77,7 +77,7 @@ class WebRadio (Player):
 
     def next(self):
 
-        self.current = (self.current+1) % len(self.media_list)
+        self.current = (self.current + 1) % len(self.media_list)
 
         self.print_current()
 
@@ -85,6 +85,5 @@ class WebRadio (Player):
         self.player.play()
 
     def stop(self):
-        logging.debug("webradio stopped")
+        logging.info("webradio stopped")
         self.player.stop()
-        
