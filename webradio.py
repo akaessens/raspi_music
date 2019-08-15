@@ -68,6 +68,7 @@ class WebRadio():
         cnt = 0
         while (not self.player.is_playing() and cnt < 10):
             sleep(0.1)
+            cnt += 1
         sleep(0.1)
 
         title = str(self.player.get_media().get_meta(vlc.Meta.Title))
